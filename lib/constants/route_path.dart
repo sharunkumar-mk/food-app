@@ -1,0 +1,9 @@
+const String splashScreen = '/';
+const String walkThroughScreen = '/walkThrough';
+const String homeScreen = '/home';
+const String signInScreen = '/signIn';
+const String signUpScreen = '/signUp';
+const String phoneSigninScreen = '/phone';
+const String otpScreen = '/otp';
+const String locationScreen = '/location';
+const String passwordResetScreen = '/reset';

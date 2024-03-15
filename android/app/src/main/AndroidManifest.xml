@@ -1,4 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.WAKE_LOCK" />
+
+<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+
+
     <application
         android:label="food_app"
         android:name="${applicationName}"
@@ -29,5 +38,25 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+            <meta-data
+             android:name="com.google.android.gms.safetynet.api_key"
+             android:value="AIzaSyCp4_N63gB5EaNoXhAy1ECAl_pp8ukgI54"/>
+
+            <meta-data
+             android:name="com.google.android.geo.API_KEY"
+             android:value="AIzaSyCGDQIJIlZX6ELjDjmnPW9VWRzHdgCuL9A"/> 
+
+            <meta-data
+           android:name="com.facebook.sdk.ApplicationId"
+           android:value="@string/facebook_app_id" />
+          <meta-data 
+           android:name="com.facebook.sdk.ClientToken" 
+           android:value="@string/facebook_client_token"/>    
+
+         
+             
+
+
     </application>
 </manifest>

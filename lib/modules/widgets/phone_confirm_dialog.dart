@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/constants/color_path.dart';
 import 'package:food_app/modules/widgets/common_button.dart';
-import 'package:food_app/modules/widgets/common_text_button.dart';
+import 'package:food_app/modules/widgets/common_textbutton.dart';
 
 class PhoneConfirmDialog extends StatelessWidget {
   const PhoneConfirmDialog(

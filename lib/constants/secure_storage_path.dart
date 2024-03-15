@@ -1,5 +1,5 @@
 class SecureStoragePath {
   SecureStoragePath._();
-  static const isUserSigned = "isUserSigned";
+  static const isUserSigned = "userSigned";
   static const firstTime = 'firsttime';
 }

@@ -1,62 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_app/constants/route_path.dart';
-import 'package:food_app/constants/secure_storage_path.dart';
+import 'package:food_app/constants/shared_preference_path.dart';
+import 'package:food_app/providers/provider.dart';
+import 'package:food_app/utils/helpers/common_helpers.dart';
+import 'package:food_app/utils/response_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SplashPage extends StatefulWidget {
+class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
 
   @override
-  State<SplashPage> createState() => _SplashPageState();
+  SplashPageState createState() => SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
-  FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+class SplashPageState extends ConsumerState<SplashPage> {
+  initCheckUp() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    final isUserNotFirstTime =
+        preferences.getBool(SharedPreferencePath.isUserNotFirstTime);
+    if (isUserNotFirstTime == true) {
+      ref.read(signInNotifierProvider.notifier).checkUserSigned();
+    } else {
+      Future.delayed(const Duration(seconds: 1), () {
+        Navigator.pushReplacementNamed(context, walkThroughScreen);
+      });
+    }
+  }
 
   @override
   void initState() {
     initCheckUp();
-
-    // isFirstTime(context);
     super.initState();
-  }
-
-  initCheckUp() async {
-    final firstTime = await isFirstTime();
-    final userSigned = await isUserSigned();
-    await Future.delayed(const Duration(seconds: 1));
-    if (!firstTime) {
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, walkThroughScreen);
-    } else if (userSigned) {
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, signInScreen);
-    } else {
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, signInScreen);
-    }
-  }
-
-  Future<bool> isFirstTime() async {
-    final isFirstTime =
-        await secureStorage.read(key: SecureStoragePath.firstTime);
-    return isFirstTime != null && isFirstTime == 'false';
-  }
-
-  Future<bool> isUserSigned() async {
-    final isUserSigned =
-        await secureStorage.read(key: SecureStoragePath.isUserSigned);
-    return isUserSigned != null && isUserSigned == 'true';
   }
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<ResponseState>(signInNotifierProvider,
+        (ResponseState? previous, ResponseState next) {
+      if (next.isLoading!) {
+      } else if (next.isError!) {
+        showMessage(context, next.errorMessage!);
+      } else {
+        Future.delayed(const Duration(seconds: 1), () {
+          if (next.response == true) {
+            Navigator.pushReplacementNamed(context, dashboardScreen);
+          } else {
+            Navigator.pushReplacementNamed(context, signInScreen);
+          }
+        });
+      }
+    });
     return Scaffold(
         body: Stack(
       children: [
         Image.asset(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
           "assets/images/splashBG.png",
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
         ),
         Center(
           child: Image.asset(

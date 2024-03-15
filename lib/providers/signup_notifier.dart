@@ -3,20 +3,31 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_app/models/auth_model.dart';
 import 'package:food_app/models/otp_verification_model.dart';
 import 'package:food_app/utils/response_state.dart';
-
-final signUpProvider = StateNotifierProvider<SignUpNotifier, ResponseState>(
-    (ref) => SignUpNotifier());
+import 'package:food_app/utils/services/firebase/firebase_repository.dart';
 
 class SignUpNotifier extends StateNotifier<ResponseState> {
-  SignUpNotifier() : super(ResponseState(isLoading: false, isError: false));
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  SignUpNotifier({required this.firebaseRepository, required this.firebaseAuth})
+      : super(ResponseState(isLoading: true, isError: false));
 
-  Future<void> signUpWithEmail({bool init = true, AuthModel? authModel}) async {
+  final FirebaseAuth firebaseAuth;
+  final FirebaseRepository firebaseRepository;
+
+  Future<void> signUpWithEmailAndPassword(
+      {bool init = true,
+      required String email,
+      required String password}) async {
     try {
       if (init) {
         state = state.copyWith(isLoading: true, isError: false);
         final result = await firebaseAuth.createUserWithEmailAndPassword(
-            email: authModel!.email!, password: authModel.password!);
+            email: email, password: password);
+
+        await firebaseRepository.fetchCreateUser(
+          body: {
+            'email': result.user!.email,
+          },
+          id: result.user!.uid,
+        );
         state =
             state.copyWith(isLoading: false, isError: false, response: result);
       }
@@ -27,14 +38,14 @@ class SignUpNotifier extends StateNotifier<ResponseState> {
   }
 
   Future<void> verifyPhoneNumber(
-      {bool init = true, required AuthModel authModel}) async {
+      {bool init = true, required String phoneNumber}) async {
     try {
       if (init) {
         state.copyWith(isLoading: true, isError: false);
       }
 
       await firebaseAuth.verifyPhoneNumber(
-          phoneNumber: authModel.phoneNumber,
+          phoneNumber: phoneNumber,
           verificationCompleted: (PhoneAuthCredential credential) async {
             await firebaseAuth.signInWithCredential(credential);
             state = state.copyWith(isLoading: false, isError: false);

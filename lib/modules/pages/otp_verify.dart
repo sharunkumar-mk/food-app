@@ -8,19 +8,19 @@ import 'package:food_app/constants/color_path.dart';
 import 'package:food_app/constants/route_path.dart';
 import 'package:food_app/models/otp_verification_model.dart';
 import 'package:food_app/modules/widgets/common_button.dart';
-import 'package:food_app/modules/widgets/otp_textfield.dart';
-import 'package:food_app/providers/signup_provider.dart';
+import 'package:food_app/providers/provider.dart';
 import 'package:food_app/utils/helpers/common_helpers.dart';
 import 'package:food_app/utils/response_state.dart';
+import 'package:pinput/pinput.dart';
 
 class OtpVerifyPage extends ConsumerStatefulWidget {
   const OtpVerifyPage({super.key, required this.otpModel});
   final OtpModel otpModel;
   @override
-  _OtpVerifyPageState createState() => _OtpVerifyPageState();
+  OtpVerifyPageState createState() => OtpVerifyPageState();
 }
 
-class _OtpVerifyPageState extends ConsumerState<OtpVerifyPage> {
+class OtpVerifyPageState extends ConsumerState<OtpVerifyPage> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   late String verificationID;
   late String phoneNumber;
@@ -81,7 +81,7 @@ class _OtpVerifyPageState extends ConsumerState<OtpVerifyPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<ResponseState>(signUpProvider,
+    ref.listen<ResponseState>(signUpNotifierProvider,
         (ResponseState? previous, ResponseState next) {
       if (next.isLoading!) {
         showProgress(context);
@@ -89,7 +89,9 @@ class _OtpVerifyPageState extends ConsumerState<OtpVerifyPage> {
         Navigator.pop(context);
         showMessage(context, next.errorMessage!);
       } else {
-        Navigator.popAndPushNamed(context, homeScreen);
+        markUserAslogged();
+        Navigator.pushNamedAndRemoveUntil(
+            context, dashboardScreen, (routes) => false);
       }
     });
     return Scaffold(
@@ -136,9 +138,14 @@ class _OtpVerifyPageState extends ConsumerState<OtpVerifyPage> {
                     ],
                   ),
                   const SizedBox(height: 30),
-                  OtpTextField(onOtpChanged: (otp) {
-                    otpCode = otp;
-                  }),
+                  Pinput(
+                    length: 6,
+                    onCompleted: (value) {
+                      setState(() {
+                        otpCode = value;
+                      });
+                    },
+                  ),
                   const SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -180,7 +187,7 @@ class _OtpVerifyPageState extends ConsumerState<OtpVerifyPage> {
                   CommonButton(
                     labelText: 'Continue',
                     onButtonPressed: () {
-                      ref.read(signUpProvider.notifier).verifyOtp(
+                      ref.read(signUpNotifierProvider.notifier).verifyOtp(
                           otpModel: OtpModel(
                               verificationId: verificationID, otp: otpCode));
                     },

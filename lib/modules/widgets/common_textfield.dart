@@ -2,20 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:food_app/constants/color_path.dart';
 
 class CommonTextField extends StatefulWidget {
-  const CommonTextField({
-    super.key,
-    required this.textEditingController,
-    this.labelText = 'Label Text',
-    this.hintText = 'Hint Text',
-    this.hasSuffix = false,
-    this.hasPrefix = false,
-    this.prefixIcon,
-    this.suffixIcon,
-    this.isPhone = false,
-    this.isEmail = false,
-    this.isPassword = false,
-  });
-
   final TextEditingController textEditingController;
   final String labelText;
   final String hintText;
@@ -26,21 +12,41 @@ class CommonTextField extends StatefulWidget {
   final bool isPhone;
   final bool isEmail;
   final bool isPassword;
+  final Function(String)? onChanged;
+  final String? Function(String?)? validator;
+
+  const CommonTextField(
+      {super.key,
+      required this.textEditingController,
+      this.labelText = 'Label Text',
+      this.hintText = 'Hint Text',
+      this.hasSuffix = false,
+      this.hasPrefix = false,
+      this.prefixIcon,
+      this.suffixIcon,
+      this.isPhone = false,
+      this.isEmail = false,
+      this.isPassword = false,
+      this.validator,
+      this.onChanged});
 
   @override
   State<CommonTextField> createState() => _CommonTextFieldState();
 }
 
 class _CommonTextFieldState extends State<CommonTextField> {
-  @override
-  void initState() {
-    super.initState();
-  }
+  bool showPassword = false;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      obscureText: widget.isPassword ? true : false,
+      onChanged: widget.onChanged,
+      validator: widget.validator,
+      obscureText: showPassword
+          ? false
+          : widget.isPassword
+              ? true
+              : false,
       keyboardType: widget.isPhone
           ? TextInputType.phone
           : widget.isEmail
@@ -63,6 +69,20 @@ class _CommonTextFieldState extends State<CommonTextField> {
           hintText: widget.hintText,
           hintStyle: TextStyle(
             color: FoodAppColors.grey.withOpacity(0.2),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(
+              width: 1,
+              color: FoodAppColors.red,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(
+              width: 1,
+              color: FoodAppColors.red,
+            ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -88,11 +108,20 @@ class _CommonTextFieldState extends State<CommonTextField> {
                   width: 24,
                 )
               : widget.isPassword
-                  ? Image.asset(
-                      'assets/icons/eye.png',
-                      height: 24,
-                      width: 24,
-                    )
+                  ? IconButton(
+                      onPressed: () {
+                        setState(() {
+                          showPassword = !showPassword;
+                        });
+                      },
+                      icon: Image.asset(
+                        showPassword
+                            ? 'assets/icons/hide.png'
+                            : 'assets/icons/view.png',
+                        color: FoodAppColors.grey.withOpacity(.5),
+                        height: 24,
+                        width: 24,
+                      ))
                   : widget.hasSuffix
                       ? IconButton(
                           icon: widget.suffixIcon!,

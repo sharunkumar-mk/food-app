@@ -5,7 +5,7 @@ class CommonTextButton extends StatelessWidget {
   const CommonTextButton(
       {super.key,
       required this.onButtonPressed,
-      this.labelText = 'Text button',
+      this.labelText = '',
       this.textColor = FoodAppColors.red});
 
   final VoidCallback onButtonPressed;

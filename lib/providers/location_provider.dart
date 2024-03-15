@@ -3,9 +3,6 @@ import 'package:food_app/utils/response_state.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
-final locationProvider = StateNotifierProvider<LocationNotifier, ResponseState>(
-    (ref) => LocationNotifier());
-
 class LocationInfo {
   final Position? position;
   final Placemark? place;
@@ -13,8 +10,8 @@ class LocationInfo {
 }
 
 class LocationNotifier extends StateNotifier<ResponseState> {
-  LocationNotifier() : super(ResponseState(isLoading: false, isError: false));
-
+  LocationNotifier() : super(ResponseState(isLoading: true, isError: false));
+  LocationInfo? locationInfo;
   Future<void> getLocation({bool init = true}) async {
     try {
       if (init) {
@@ -27,6 +24,7 @@ class LocationNotifier extends StateNotifier<ResponseState> {
         );
         Placemark place = placemarks[0];
         final response = LocationInfo(position: position, place: place);
+        locationInfo = response;
         state = state.copyWith(
             isLoading: false, isError: false, response: response);
       }

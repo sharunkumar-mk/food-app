@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/constants/route_path.dart';
 import 'package:food_app/models/item_model.dart';
+import 'package:food_app/models/order_model.dart';
 import 'package:food_app/models/otp_verification_model.dart';
 import 'package:food_app/modules/pages/dashboard.dart';
 import 'package:food_app/modules/pages/item_details.dart';
@@ -128,8 +129,9 @@ class Routes {
         );
 
       case orderTrackScreen:
+        Order order = settings.arguments as Order;
         return MaterialPageRoute(
-          builder: (_) => const OrderTrackPage(),
+          builder: (_) => OrderTrackPage(order: order),
         );
 
       case notificationScreen:

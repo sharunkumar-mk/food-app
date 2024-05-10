@@ -1,18 +1,20 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_app/constants/api_constants.dart';
+import 'package:food_app/models/order_model.dart';
 import 'package:food_app/providers/location_provider.dart';
 import 'package:food_app/providers/provider.dart';
 import 'package:food_app/providers/stream_provider.dart';
-import 'package:food_app/utils/helpers/common_helpers.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 
 class OrderTrackPage extends ConsumerStatefulWidget {
-  const OrderTrackPage({super.key});
+  final Order order;
+  const OrderTrackPage({
+    super.key,
+    required this.order,
+  });
 
   @override
   OrderTrackPageState createState() => OrderTrackPageState();
@@ -24,8 +26,6 @@ class OrderTrackPageState extends ConsumerState<OrderTrackPage> {
   LocationInfo? userLocationInfo;
   static const LatLng sourceLocation = LatLng(10.5369921, 76.2640595);
   static const LatLng destinationLocation = LatLng(10.562449, 76.3559012);
-
-  LocationData? currentLocation;
 
   List<LatLng> polylineCoordinates = [];
   // StreamSubscription<LocationData>? locationSubscription;
@@ -84,6 +84,7 @@ class OrderTrackPageState extends ConsumerState<OrderTrackPage> {
 
   @override
   void initState() {
+    print(widget.order);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       getUserLocation();
     });

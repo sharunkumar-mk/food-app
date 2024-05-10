@@ -10,6 +10,7 @@ class OrderNotifier extends StateNotifier<ResponseState> {
   final FirebaseRepository firebaseRepository;
   List<OrderItem> preOrders = [];
   List<OrderItem> upCommingOrders = [];
+  OrderModel? orderModel;
 
   Future<void> placeOrder({bool init = true, order, required userid}) async {
     try {
@@ -18,6 +19,7 @@ class OrderNotifier extends StateNotifier<ResponseState> {
       }
       final result =
           await firebaseRepository.fetchPlaceOrder(body: order, userID: userid);
+
       state =
           state.copyWith(isLoading: false, isError: false, response: result);
     } catch (e) {
@@ -32,7 +34,7 @@ class OrderNotifier extends StateNotifier<ResponseState> {
         state = state.copyWith(isLoading: true, isError: false);
       }
       final result = await firebaseRepository.fetchOrderDetails(userid);
-
+      orderModel = result;
       for (var order in result.orders!) {
         if (order.status == 'pending') {
           upCommingOrders.addAll(order.items);

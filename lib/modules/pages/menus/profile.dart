@@ -73,9 +73,9 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
       }
 
       if (oldMobileNumber != mobileEditingController.text.trim()) {
-        await phoneNumberVerify();
-        if (!context!.mounted) return;
-        Navigator.pushNamed(context, otpScreen);
+        // await phoneNumberVerify();
+
+        Navigator.pushNamed(context!, dashboardScreen);
         // ref.read(signUpNotifierProvider.notifier).verifyPhoneNumber(
         //     phoneNumber: mobileEditingController.text.trim());
       }

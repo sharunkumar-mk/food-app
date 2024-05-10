@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_app/constants/route_path.dart';
+import 'package:food_app/models/order_model.dart';
 
 import 'package:food_app/modules/widgets/common_tabbar.dart';
 import 'package:food_app/modules/widgets/order_item_card.dart';
@@ -19,15 +20,21 @@ class OrderPage extends ConsumerStatefulWidget {
 class OrderPageState extends ConsumerState<OrderPage> {
   List<Widget> widgets = [const PreOrders(), const UpcomingOrders()];
   List<String> widgetLabels = ['Pre-Orders', 'Upcoming'];
+  late OrderModel orderModel;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref
-          .read(orderNotifierProvider.notifier)
-          .getOrderDetails(userid: FirebaseAuth.instance.currentUser!.uid);
+      getOrderDetails();
     });
     super.initState();
+  }
+
+  getOrderDetails() async {
+    await ref
+        .read(orderNotifierProvider.notifier)
+        .getOrderDetails(userid: FirebaseAuth.instance.currentUser!.uid);
+    orderModel = ref.read(orderNotifierProvider.notifier).orderModel!;
   }
 
   @override
@@ -95,7 +102,8 @@ class UpcomingOrders extends StatelessWidget {
                           return OrderItemCard(
                               onFirstButtonPressed: () {},
                               onSecondfButtonPressed: () {
-                                Navigator.pushNamed(context, orderTrackScreen);
+                                Navigator.pushNamed(context, orderTrackScreen,
+                                    arguments: orderList[index]);
                               },
                               upComming: true,
                               price: orderList[index].itemPrice,

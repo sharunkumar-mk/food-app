@@ -71,7 +71,7 @@ class ItemCardList extends StatelessWidget {
                       'assets/icons/time.png',
                       height: 15,
                       width: 15,
-                      color: FoodAppColors.red,
+                      color: FoodAppColors.primaryRed,
                     ),
                     const Text('24 min')
                   ]),

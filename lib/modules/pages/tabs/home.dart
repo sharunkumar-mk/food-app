@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_app/constants/color_path.dart';
 import 'package:food_app/constants/route_path.dart';
@@ -70,6 +69,8 @@ class HomePageState extends ConsumerState<HomePage> {
     {'name': 'Taco', 'icons': 'assets/icons/taco.png'},
   ];
 
+  List<Item> itemList = [];
+
   onButtonPressed({Item? item, required String type}) {
     if (type == 'ITEM_DETAILS') {
       Navigator.pushNamed(context, itemDetailsScreen, arguments: item);
@@ -84,8 +85,8 @@ class HomePageState extends ConsumerState<HomePage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(locationNotifierProvider.notifier).getLocation();
-      final res = ref.read(locationNotifierProvider.notifier).locationInfo;
-      print(res);
+      // final res = ref.read(locationNotifierProvider.notifier).locationInfo;
+      // print(res);
     });
 
     super.initState();
@@ -110,6 +111,7 @@ class HomePageState extends ConsumerState<HomePage> {
     });
 
     final state = ref.watch(itemNotifierProvider);
+
     final location = ref.watch(locationNotifierProvider);
     return Scaffold(
         drawer: CommonDrawer(
@@ -125,6 +127,7 @@ class HomePageState extends ConsumerState<HomePage> {
                 : state.isError!
                     ? Text(state.errorMessage.toString())
                     : RefreshIndicator(
+                        color: FoodAppColors.primaryRed,
                         onRefresh: () {
                           return ref
                               .read(itemNotifierProvider.notifier)
@@ -134,8 +137,8 @@ class HomePageState extends ConsumerState<HomePage> {
                           SliverToBoxAdapter(
                               child: Column(
                             children: [
-                              Container(
-                                margin:
+                              Padding(
+                                padding:
                                     const EdgeInsets.symmetric(horizontal: 20),
                                 child: Column(
                                   children: [
@@ -183,35 +186,43 @@ class HomePageState extends ConsumerState<HomePage> {
                                   header: 'Popular Near You',
                                   subHeader: 'View more'),
                               const Gap(20),
-                              Container(
-                                margin: const EdgeInsets.only(left: 20),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 20),
                                 child: Column(
                                   children: [
                                     SizedBox(
                                       height: 270,
-                                      child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount:
-                                              state.response.items.length,
-                                          itemBuilder: (context, index) {
-                                            return Row(
-                                              children: [
-                                                ItemCardGrid(
-                                                  onItemPressed: () {
-                                                    onButtonPressed(
-                                                        type: 'ITEM_DETAILS',
-                                                        item: state.response
-                                                            .items[index]);
-                                                  },
-                                                  item: state
-                                                      .response.items[index],
-                                                ),
-                                                const Gap(20)
-                                              ],
-                                            );
-                                          }),
+                                      child: Builder(
+                                        builder: (context) {
+                                          final popularItems = state
+                                              .response.items
+                                              .where((item) =>
+                                                  item.tag == 'popular')
+                                              .toList();
+                                          return ListView.builder(
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: popularItems.length,
+                                              itemBuilder: (context, index) {
+                                                return Row(
+                                                  children: [
+                                                    ItemCardGrid(
+                                                      onItemPressed: () {
+                                                        onButtonPressed(
+                                                            type:
+                                                                'ITEM_DETAILS',
+                                                            item: popularItems[
+                                                                index]);
+                                                      },
+                                                      item: popularItems[index],
+                                                    ),
+                                                    const Gap(20)
+                                                  ],
+                                                );
+                                              });
+                                        },
+                                      ),
                                     ),
-                                    const SizedBox(height: 30),
+                                    const Gap(30),
                                     SizedBox(
                                       height: 120,
                                       child: ListView.builder(
@@ -259,72 +270,88 @@ class HomePageState extends ConsumerState<HomePage> {
                                   header: 'Recommended',
                                   subHeader: 'View more'),
                               const SizedBox(height: 20),
-                              Container(
-                                margin: const EdgeInsets.only(left: 20),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 20),
                                 child: Column(
                                   children: [
                                     SizedBox(
                                       height: 270,
-                                      child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount:
-                                              state.response.items.length,
-                                          itemBuilder: (context, index) {
-                                            return Row(
-                                              children: [
-                                                ItemCardGrid(
-                                                  item: state
-                                                      .response.items[index],
-                                                ),
-                                                const Gap(20)
-                                              ],
-                                            );
-                                          }),
+                                      child: Builder(builder: (context) {
+                                        final recommendedItems = state
+                                            .response.items
+                                            .where((item) =>
+                                                item.tag == 'recommended')
+                                            .toList();
+
+                                        return ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: recommendedItems.length,
+                                            itemBuilder: (context, index) {
+                                              return Row(
+                                                children: [
+                                                  ItemCardGrid(
+                                                    item:
+                                                        recommendedItems[index],
+                                                  ),
+                                                  const Gap(20)
+                                                ],
+                                              );
+                                            });
+                                      }),
                                     ),
                                   ],
                                 ),
                               ),
+                              const SizedBox(height: 30),
+                              SingleChildScrollView(
+                                  clipBehavior: Clip.none,
+                                  scrollDirection: Axis.horizontal,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 20),
+                                    child: Row(
+                                      children: [
+                                        for (var i = 0; i <= 10; i++)
+                                          const Row(
+                                            children: [
+                                              CommonGiftCard(),
+                                              SizedBox(width: 20)
+                                            ],
+                                          ),
+                                      ],
+                                    ),
+                                  )),
+                              Gap(30),
+                              Container(
+                                margin: const EdgeInsets.only(left: 20),
+                                height: MediaQuery.of(context).size.height / 2,
+                                child: Builder(builder: (context) {
+                                  final popularItems = state.response.items
+                                      .where((item) => item.tag == 'popular')
+                                      .toList();
+                                  final featuredItems = state.response.items
+                                      .where((item) => item.tag == 'featured')
+                                      .toList();
+                                  final newItems = state.response.items
+                                      .where((item) => item.tag == 'newest')
+                                      .toList();
+                                  final trendingItems = state.response.items
+                                      .where((item) => item.tag == 'trending')
+                                      .toList();
+                                  return CommonTabBar(widgetOptions: [
+                                    FeaturedTab(items: featuredItems),
+                                    PopularTab(items: popularItems),
+                                    NewestTab(items: newItems),
+                                    TrendingTab(items: trendingItems),
+                                  ], widgetLabels: const [
+                                    'Featured',
+                                    'Popular',
+                                    'Newest',
+                                    'Trending',
+                                  ]);
+                                }),
+                              )
                             ],
                           )),
-                          const SliverToBoxAdapter(child: SizedBox(height: 30)),
-                          SliverToBoxAdapter(
-                            child: SingleChildScrollView(
-                                clipBehavior: Clip.none,
-                                scrollDirection: Axis.horizontal,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 20),
-                                  child: Row(
-                                    children: [
-                                      for (var i = 0; i <= 10; i++)
-                                        const Row(
-                                          children: [
-                                            CommonGiftCard(),
-                                            SizedBox(width: 20)
-                                          ],
-                                        ),
-                                    ],
-                                  ),
-                                )),
-                          ),
-                          const SliverToBoxAdapter(child: SizedBox(height: 30)),
-                          SliverToBoxAdapter(
-                            child: SizedBox(
-                              height: MediaQuery.of(context).size.height * .85,
-                              child: CommonTabBar(widgetOptions: [
-                                FeaturedTab(
-                                  items: state.response,
-                                ),
-                                const PopularTab(),
-                                const NewestTab(),
-                                const TrendingTab(),
-                              ], widgetLabels: const [
-                                'Featured',
-                                'Popular',
-                                'Newest',
-                                'Trending',
-                              ]),
-                            ),
-                          )
                         ]),
                       )));
   }

@@ -6,7 +6,7 @@ class CommonTextButton extends StatelessWidget {
       {super.key,
       required this.onButtonPressed,
       this.labelText = '',
-      this.textColor = FoodAppColors.red});
+      this.textColor = FoodAppColors.primaryRed});
 
   final VoidCallback onButtonPressed;
   final String labelText;

@@ -13,8 +13,8 @@ class CommonSectionHeader extends StatelessWidget {
   final VoidCallback? onButtonPressed;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -26,7 +26,7 @@ class CommonSectionHeader extends StatelessWidget {
             subHeader,
             style: const TextStyle(
               fontSize: 14,
-              color: FoodAppColors.red,
+              color: FoodAppColors.primaryRed,
             ),
           ),
         ],

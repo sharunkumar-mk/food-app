@@ -64,10 +64,14 @@ class OrderTrackPageState extends ConsumerState<OrderTrackPage> {
     try {
       PolylinePoints polylinePoints = PolylinePoints();
       PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        googleMapApi,
-        PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
-        PointLatLng(
-            destinationLocation.latitude, destinationLocation.longitude),
+        googleApiKey: googleMapApi,
+        request: PolylineRequest(
+          origin:
+              PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
+          destination: PointLatLng(
+              destinationLocation.latitude, destinationLocation.longitude),
+          mode: TravelMode.driving,
+        ),
       );
       if (result.points.isNotEmpty) {
         setState(() {

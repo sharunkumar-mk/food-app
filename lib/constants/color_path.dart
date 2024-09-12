@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class FoodAppColors {
   FoodAppColors._();
-  static const red = Color(0xfff44748);
+  static const primaryRed = Color(0xfff44748);
   static const green = Color(0xff47b872);
   static const yellow = Color(0xfffcc45e);
   static const black = Color(0xff1E0909);

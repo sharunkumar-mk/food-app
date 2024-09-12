@@ -54,7 +54,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
               : null,
       controller: widget.textEditingController,
       style: const TextStyle(
-        height: 2.5,
+        height: 2,
         fontSize: 16,
         fontWeight: FontWeight.w400,
         color: Colors.black,
@@ -74,14 +74,14 @@ class _CommonTextFieldState extends State<CommonTextField> {
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(
               width: 1,
-              color: FoodAppColors.red,
+              color: FoodAppColors.primaryRed,
             ),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(
               width: 1,
-              color: FoodAppColors.red,
+              color: FoodAppColors.primaryRed,
             ),
           ),
           enabledBorder: OutlineInputBorder(
@@ -94,7 +94,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(
-              color: FoodAppColors.red,
+              color: FoodAppColors.primaryRed,
               width: 1,
             ),
           ),

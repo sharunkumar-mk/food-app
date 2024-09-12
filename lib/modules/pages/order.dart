@@ -42,7 +42,9 @@ class OrderPageState extends ConsumerState<OrderPage> {
     return Scaffold(
       body: SafeArea(
           child:
-              CommonTabBar(widgetOptions: widgets, widgetLabels: widgetLabels)),
+              CommonTabBar(
+                
+                widgetOptions: widgets, widgetLabels: widgetLabels)),
     );
   }
 }

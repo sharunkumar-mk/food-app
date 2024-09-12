@@ -3,85 +3,103 @@
 <plist version="1.0">
 <dict>
 
-	<key>CFBundleURLTypes</key>
+
+<key>GIDClientID</key>
+<string>530034374672-ukanee8g586b7g9rdelqrfcbkjn718s3.apps.googleusercontent.com</string>
+<key>CFBundleURLTypes</key>
 <array>
-    <dict>
-        <key>CFBundleURLSchemes</key>
-        <array>
-            <string>app-1-530034374672-ios-c72d33104ce273eebf3295</string>
-        </array>
-    </dict>
+  <dict>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>com.googleusercontent.apps.530034374672-ukanee8g586b7g9rdelqrfcbkjn718s3</string>
+    </array>
+  </dict>
 </array>
 
-
-	<key>CFBundleURLTypes</key>
-<array>
-    <dict>
-        <key>CFBundleTypeRole</key>
-        <string>Editor</string>
-        <key>CFBundleURLName</key>
-        <string></string>
-        <key>CFBundleURLSchemes</key>
-        <array>
-            <string>app-1-530034374672-ios-c72d33104ce273eebf3295</string>
-        </array>
-    </dict>
-</array>
 
 	<key>FirebaseAppDelegateProxyEnabled</key>
-<string>NO</string>
-<key>UIBackgroundModes</key>
-<array>
-  <string>fetch</string>
-  <string>remote-notification</string>
-</array>
-<key>com.apple.developer.associated-domains</key>
-<array>
-  <string>applinks:yourdomain.page.link</string>
-</array>
+    <string>NO</string>
+
+
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>fetch</string>
+      <string>remote-notification</string>
+    </array>
+
+
+    <key>com.apple.developer.associated-domains</key>
+   <array>
+    <string>applinks:yourdomain.page.link</string>
+   </array>
+
+
+
 
 <key>NSPhotoLibraryUsageDescription</key>
 <string>Allow access to photo library</string>
+
 <key>NSCameraUsageDescription</key>
 <string>Allow access to camera</string>
+
 <key>NSMicrophoneUsageDescription</key>
 <string>Allow access to microphone</string>
+
+
+
+
 	
 
 	<key>NSLocationWhenInUseUsageDescription</key>
     <string>Your location is needed for...</string>
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+
 	<key>CFBundleDisplayName</key>
 	<string>Food App</string>
+
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+
 	<key>CFBundleName</key>
 	<string>food_app</string>
+
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
+
 	<key>CFBundleSignature</key>
 	<string>????</string>
+
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
+
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -89,9 +107,17 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
+
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
 </dict>
 </plist>
+
+   
+
+   

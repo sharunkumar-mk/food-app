@@ -47,6 +47,8 @@ class ItemDetailsPageState extends ConsumerState<ItemDetailsPage> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,7 +110,7 @@ class ItemDetailsPageState extends ConsumerState<ItemDetailsPage> {
               ],
             ),
           ),
-          // Text(widget.item.description.toString())
+          Text(widget.item.description.toString())
         ],
       ),
       bottomNavigationBar: Padding(

@@ -12,6 +12,7 @@ import 'package:food_app/modules/pages/menus/gift.dart';
 import 'package:food_app/modules/pages/menus/profile.dart';
 import 'package:food_app/modules/pages/menus/settings.dart';
 import 'package:food_app/modules/pages/order.dart';
+import 'package:food_app/modules/pages/order_track.dart';
 import 'package:food_app/modules/pages/payment_method.dart';
 import 'package:food_app/modules/pages/search.dart';
 import 'package:food_app/modules/pages/tabs/cart.dart';
@@ -24,7 +25,6 @@ import 'package:food_app/modules/pages/sign_in.dart';
 import 'package:food_app/modules/pages/sign_up.dart';
 import 'package:food_app/modules/pages/splash.dart';
 import 'package:food_app/modules/pages/tabs/notification.dart';
-import 'package:food_app/modules/pages/track_order.dart';
 import 'package:food_app/modules/pages/walk_through.dart';
 
 class Routes {

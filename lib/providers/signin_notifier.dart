@@ -14,6 +14,8 @@ class SignInNotifier extends StateNotifier<ResponseState> {
       : super(ResponseState(isLoading: true, isError: false));
   FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
 //check user sigend or not
   Future<void> checkUserSigned({bool init = true}) async {
     try {
@@ -67,7 +69,6 @@ class SignInNotifier extends StateNotifier<ResponseState> {
   }
 
   Future<void> signInWithGoogle({bool init = true}) async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
     try {
       if (init) {
         state = state.copyWith(isLoading: true, isError: false);
@@ -97,10 +98,10 @@ class SignInNotifier extends StateNotifier<ResponseState> {
       if (init) {
         // state = state.copyWith(isLoading: true, isError: false);
         final LoginResult loginResult = await FacebookAuth.instance.login();
-        print(loginResult);
         if (loginResult.status == LoginStatus.success) {
           final OAuthCredential facebookAuthCredential =
-              FacebookAuthProvider.credential(loginResult.accessToken!.token);
+              FacebookAuthProvider.credential(
+                  loginResult.accessToken!.tokenString);
           final user = await FirebaseAuth.instance
               .signInWithCredential(facebookAuthCredential);
           state =

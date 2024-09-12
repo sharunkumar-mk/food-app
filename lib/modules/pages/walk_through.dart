@@ -107,7 +107,7 @@ class WalkthroughScreen extends StatelessWidget {
               text: title,
               children: [
                 TextSpan(
-                    style: const TextStyle(color: FoodAppColors.red),
+                    style: const TextStyle(color: FoodAppColors.primaryRed),
                     text: subTitle)
               ]),
         ),

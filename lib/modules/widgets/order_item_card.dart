@@ -108,7 +108,7 @@ class OrderItemCard extends StatelessWidget {
                       price.toString(),
                       style: const TextStyle(
                           fontSize: 20,
-                          color: FoodAppColors.red,
+                          color: FoodAppColors.primaryRed,
                           fontWeight: FontWeight.bold),
                     )
                   ],
@@ -121,10 +121,12 @@ class OrderItemCard extends StatelessWidget {
                     Expanded(
                       child: CommonButton(
                         paddingHorizontal: 0,
-                        backgroundColor:
-                            upComming ? FoodAppColors.white : FoodAppColors.red,
-                        foregroundColor:
-                            upComming ? FoodAppColors.red : FoodAppColors.white,
+                        backgroundColor: upComming
+                            ? FoodAppColors.white
+                            : FoodAppColors.primaryRed,
+                        foregroundColor: upComming
+                            ? FoodAppColors.primaryRed
+                            : FoodAppColors.white,
                         paddingVertical: 12,
                         hasIcon: upComming ? false : true,
                         icon: Image.asset(
@@ -142,11 +144,11 @@ class OrderItemCard extends StatelessWidget {
                       child: CommonButton(
                           paddingHorizontal: 0,
                           backgroundColor: upComming
-                              ? FoodAppColors.red
+                              ? FoodAppColors.primaryRed
                               : FoodAppColors.white,
                           foregroundColor: upComming
                               ? FoodAppColors.white
-                              : FoodAppColors.red,
+                              : FoodAppColors.primaryRed,
                           paddingVertical: 12,
                           hasIcon: upComming ? true : false,
                           icon: Image.asset(

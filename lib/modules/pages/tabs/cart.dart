@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_app/constants/color_path.dart';
 import 'package:food_app/constants/route_path.dart';
-import 'package:food_app/models/cart_item_model.dart';
 import 'package:food_app/modules/widgets/common_appbar.dart';
 import 'package:food_app/modules/widgets/common_button.dart';
 import 'package:food_app/modules/widgets/item/cart_item_card.dart';
@@ -16,26 +15,27 @@ class CartPage extends ConsumerStatefulWidget {
 }
 
 class CartPageState extends ConsumerState<CartPage> {
-  List<CartItem> cartItem = [];
+  late int? selectedIndex;
   @override
   void initState() {
-    cartItem = ref.read(cartNotifierProvider.notifier).cartItemList;
+    selectedIndex =
+        ref.read(bottomNavigationNotifierProvider.notifier).selectedIndex;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final cart = ref.watch(cartNotifierProvider);
     return Scaffold(
-        backgroundColor: FoodAppColors.white,
-        body: cartItem.isEmpty
+        appBar: CommonAppBar(
+            title: 'My cart', hasLeading: selectedIndex == 3 ? false : true),
+        body: cart.isEmpty
             ? const Center(child: Text('Cart empty'))
-            : SafeArea(
-                child: Column(
+            : Column(
                 children: [
-                  const CommonAppBar(title: 'My cart'),
                   Expanded(
                     child: ListView.builder(
-                        itemCount: cartItem.length,
+                        itemCount: cart.length,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.all(10.0),
@@ -43,8 +43,7 @@ class CartPageState extends ConsumerState<CartPage> {
                                 onDismissed: (direction) {
                                   ref
                                       .read(cartNotifierProvider.notifier)
-                                      .removeCartItem(
-                                          cartItem: cartItem[index]);
+                                      .removeCartItem(cartItem: cart[index]);
                                 },
                                 direction: DismissDirection.endToStart,
                                 secondaryBackground: Container(
@@ -59,12 +58,12 @@ class CartPageState extends ConsumerState<CartPage> {
                                               BorderRadius.circular(12),
                                           border: Border.all(
                                               width: 1,
-                                              color: FoodAppColors.red)),
+                                              color: FoodAppColors.primaryRed)),
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
                                         child: Image.asset(
                                           "assets/icons/bin.png",
-                                          color: FoodAppColors.red,
+                                          color: FoodAppColors.primaryRed,
                                         ),
                                       ),
                                     ),
@@ -81,29 +80,31 @@ class CartPageState extends ConsumerState<CartPage> {
                                     ),
                                   ),
                                 ),
-                                key: Key(cartItem[index].toString()),
+                                key: Key(cart[index].toString()),
                                 child: CartItemCard(
-                                  cartItem: cartItem[index],
+                                  cartItem: cart[index],
                                   onChange: (value) {
                                     ref
                                         .read(cartNotifierProvider.notifier)
                                         .updateItemCount(
-                                            cartItem[index].item.name!, value);
+                                            cart[index].item.name!, value);
                                   },
                                 )),
                           );
                         }),
                   ),
                 ],
-              )),
+              ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.only(bottom: 30, left: 20, right: 20),
-          child: CommonButton(
-            labelText: 'Checkout',
-            onButtonPressed: () {
-              Navigator.pushNamed(context, paymentMethodScreen);
-            },
-          ),
+          child: cart.isEmpty
+              ? const SizedBox.shrink()
+              : CommonButton(
+                  labelText: 'Checkout',
+                  onButtonPressed: () {
+                    Navigator.pushNamed(context, paymentMethodScreen);
+                  },
+                ),
         ));
   }
 

@@ -1,10 +1,7 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_app/config/routes.dart';
 import 'package:food_app/constants/color_path.dart';
-import 'package:food_app/constants/route_path.dart';
 import 'package:food_app/utils/helpers/common_helpers.dart';
 import 'package:food_app/utils/services/firebase/firebase_options.dart';
 
@@ -29,6 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: FoodAppColors.scaffoldBGColor,
         textTheme: GoogleFonts.poppinsTextTheme(

@@ -44,7 +44,7 @@ class ItemCardGrid extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15),
                       child: CachedNetworkImage(
                         fit: BoxFit.cover,
-                        imageUrl: item.imageUrl!,
+                        imageUrl: item.imageUrl ?? '',
                         placeholder: (context, url) => const Center(
                             child: CupertinoActivityIndicator(radius: 10)),
                         errorWidget: (context, url, error) => Image.asset(

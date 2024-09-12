@@ -173,7 +173,10 @@ class SignUpPageState extends ConsumerState<SignUpPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Row(
-                    children: [Image.asset("assets/images/logo.png")],
+                    children: [
+                      Image.asset(
+                          width: 150, height: 150, "assets/images/logo.png")
+                    ],
                   ),
                   const SizedBox(height: 30),
                   const Row(
@@ -189,7 +192,7 @@ class SignUpPageState extends ConsumerState<SignUpPage> {
                       Text(
                         'Cohort',
                         style: TextStyle(
-                            color: FoodAppColors.red,
+                            color: FoodAppColors.primaryRed,
                             fontSize: 28,
                             fontWeight: FontWeight.bold),
                       )
@@ -248,7 +251,7 @@ class SignUpPageState extends ConsumerState<SignUpPage> {
                   const SizedBox(height: 30),
                   CommonButton(
                       hasBorder: true,
-                      foregroundColor: FoodAppColors.red,
+                      foregroundColor: FoodAppColors.primaryRed,
                       labelText: 'Sign In',
                       onButtonPressed: () {
                         signInWithPhoneNumber('286425');

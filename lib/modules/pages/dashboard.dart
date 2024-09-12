@@ -2,13 +2,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_app/constants/color_path.dart';
-import 'package:food_app/constants/route_path.dart';
 import 'package:food_app/modules/pages/order.dart';
-import 'package:food_app/modules/pages/tabs/bag.dart';
+import 'package:food_app/modules/pages/tabs/cart.dart';
 import 'package:food_app/modules/pages/tabs/favourite.dart';
 import 'package:food_app/modules/pages/tabs/home.dart';
 import 'package:food_app/modules/pages/tabs/notification.dart';
-import 'package:food_app/modules/pages/tabs/premium.dart';
+
 import 'package:food_app/providers/provider.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -24,9 +23,17 @@ class DashboardPageState extends ConsumerState<DashboardPage>
   static const List<Widget> widgetOptions = <Widget>[
     HomePage(),
     FavouritePage(),
-    PremiumPage(),
     OrderPage(),
+    CartPage(),
     NotificationPage()
+  ];
+
+  List<String> bottomMenuIcons = [
+    "home.png",
+    "heart.png",
+    "bag.png",
+    "cart.png",
+    "notification.png"
   ];
 
   late final tabController =
@@ -63,10 +70,14 @@ class DashboardPageState extends ConsumerState<DashboardPage>
   Widget build(BuildContext context) {
     final state = ref.watch(bottomNavigationNotifierProvider.notifier);
     return Scaffold(
-      body: TabBarView(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: tabController,
-        children: widgetOptions,
+      body: SafeArea(
+        child: Builder(builder: (context) {
+          return TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: tabController,
+            children: widgetOptions,
+          );
+        }),
       ),
       bottomNavigationBar: Stack(
         clipBehavior: Clip.none,
@@ -74,10 +85,9 @@ class DashboardPageState extends ConsumerState<DashboardPage>
         children: [
           BackdropFilter(filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5)),
           Container(
-            decoration: BoxDecoration(
-                color: FoodAppColors.white.withOpacity(.2),
-                gradient:
-                    const LinearGradient(colors: [Colors.black, Colors.white])),
+            decoration: const BoxDecoration(
+              color: FoodAppColors.white,
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -90,67 +100,25 @@ class DashboardPageState extends ConsumerState<DashboardPage>
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    state.selectedIndex = 0;
-                                    tabController
-                                        .animateTo(state.selectedIndex);
-                                  });
-                                },
-                                icon: Image.asset(
-                                  "assets/icons/home.png",
-                                  width: 25,
-                                  color: Colors.grey,
-                                )),
-                            IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    state.selectedIndex = 1;
-                                    tabController
-                                        .animateTo(state.selectedIndex);
-                                  });
-                                },
-                                icon: Image.asset(
-                                  "assets/icons/heart.png",
-                                  width: 25,
-                                  color: Colors.grey,
-                                )),
+                            for (var icon in bottomMenuIcons)
+                              IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      state.selectedIndex =
+                                          bottomMenuIcons.indexOf(icon);
+                                      tabController
+                                          .animateTo(state.selectedIndex);
+                                    });
+                                  },
+                                  icon: Image.asset(
+                                    "assets/icons/$icon",
+                                    width: 25,
+                                    color: state.selectedIndex ==
+                                            bottomMenuIcons.indexOf(icon)
+                                        ? FoodAppColors.primaryRed
+                                        : FoodAppColors.grey,
+                                  )),
                           ]),
-                    ),
-                    const SizedBox(
-                      width: 45,
-                    ),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  state.selectedIndex = 3;
-                                  tabController.animateTo(state.selectedIndex);
-                                });
-                              },
-                              icon: Image.asset(
-                                "assets/icons/bag.png",
-                                width: 25,
-                                color: Colors.grey,
-                              )),
-                          IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  state.selectedIndex = 4;
-                                  tabController.animateTo(state.selectedIndex);
-                                });
-                              },
-                              icon: Image.asset(
-                                "assets/icons/notification.png",
-                                width: 25,
-                                color: Colors.grey,
-                              )),
-                        ],
-                      ),
                     ),
                   ],
                 ),
@@ -160,25 +128,6 @@ class DashboardPageState extends ConsumerState<DashboardPage>
               ],
             ),
           ),
-          Positioned(
-            bottom: 30,
-            child: Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  color: FoodAppColors.white),
-              child: IconButton(
-                  onPressed: () {
-                    setState(() {});
-                  },
-                  icon: Image.asset(
-                    "assets/icons/premium.png",
-                    width: 25,
-                    color: FoodAppColors.red,
-                  )),
-            ),
-          )
         ],
       ),
     );

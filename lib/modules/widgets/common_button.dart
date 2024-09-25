@@ -18,8 +18,8 @@ class CommonButton extends StatelessWidget {
     super.key,
     required this.onButtonPressed,
     this.hasBorder = false,
-    this.borderColor = FoodAppColors.red,
-    this.backgroundColor = FoodAppColors.red,
+    this.borderColor = FoodAppColors.primaryRed,
+    this.backgroundColor = FoodAppColors.primaryRed,
     this.foregroundColor = FoodAppColors.white,
     this.labelText = '',
     this.hasIcon = false,
@@ -34,18 +34,17 @@ class CommonButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ButtonStyle(
-          padding: MaterialStatePropertyAll(EdgeInsets.symmetric(
+          padding: WidgetStatePropertyAll(EdgeInsets.symmetric(
               vertical: paddingVertical, horizontal: paddingHorizontal)),
-          shape: MaterialStatePropertyAll(
+          shape: WidgetStatePropertyAll(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
           side: hasBorder
-              ? MaterialStatePropertyAll(
-                  BorderSide(width: 1, color: borderColor))
+              ? WidgetStatePropertyAll(BorderSide(width: 1, color: borderColor))
               : null,
-          foregroundColor: MaterialStatePropertyAll(foregroundColor),
-          backgroundColor: MaterialStateProperty.resolveWith<Color>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
+          foregroundColor: WidgetStatePropertyAll(foregroundColor),
+          backgroundColor: WidgetStateProperty.resolveWith<Color>(
+            (Set<WidgetState> states) {
+              if (states.contains(WidgetState.disabled)) {
                 return Colors.grey;
               }
               return hasBorder ? FoodAppColors.white : backgroundColor;
@@ -53,8 +52,8 @@ class CommonButton extends StatelessWidget {
           ),
           // backgroundColor: MaterialStatePropertyAll(
           //     hasBorder ? FoodAppColors.white : backgroundColor),
-          overlayColor: MaterialStatePropertyAll(hasBorder
-              ? FoodAppColors.red.withOpacity(.10)
+          overlayColor: WidgetStatePropertyAll(hasBorder
+              ? FoodAppColors.primaryRed.withOpacity(.10)
               : FoodAppColors.white.withOpacity(.10))),
       onPressed: isActive ? onButtonPressed : null,
       child: hasIconOnly

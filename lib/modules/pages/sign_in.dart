@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:food_app/constants/color_path.dart';
 import 'package:food_app/constants/route_path.dart';
-import 'package:food_app/constants/shared_preference_path.dart';
 import 'package:food_app/modules/widgets/common_button.dart';
 import 'package:food_app/modules/widgets/common_textfield.dart';
 import 'package:food_app/providers/provider.dart';
@@ -12,7 +11,6 @@ import 'package:food_app/utils/helpers/common_helpers.dart';
 import 'package:food_app/utils/response_state.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInPage extends ConsumerStatefulWidget {
   const SignInPage({super.key});
@@ -29,8 +27,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
   bool isLoading = false;
   late bool isFirstTime;
   final formKey = GlobalKey<FormState>();
-
-  get googleSignIn => null;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
 
   onButtonPressed({required String type}) async {
     if (type == 'SIGN_IN') {
@@ -44,20 +41,12 @@ class SignInPageState extends ConsumerState<SignInPage> {
     } else if (type == 'FORGOT_PASSWORD') {
       Navigator.pushNamed(context, passwordResetScreen);
     } else if (type == 'GOOGLE') {
-      final GoogleSignInAccount? googleSignInAccount = await googleSignIn();
-
-      if (googleSignInAccount == null) return;
-
-      // final GoogleSignInAuthentication googleSignInAuthentication =
-      //     await googleSignInAccount.authentication;
-
-      // final AuthCredential authCredential = GoogleAuthProvider.credential(
-      //     accessToken: googleSignInAuthentication.accessToken,
-      //     idToken: googleSignInAuthentication.idToken);
-
-      // final UserCredential userCredential =
-      // await firebaseAuth.signInWithCredential(authCredential);
-      // final user = userCredential.user;
+      try {
+        final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+        print(googleUser);
+      } catch (e) {
+        print(e);
+      }
     } else if (type == 'PHONE') {
       Navigator.pushNamed(context, phoneSigninScreen);
     } else if (type == 'FACEBOOK') {}
@@ -91,23 +80,26 @@ class SignInPageState extends ConsumerState<SignInPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(
-                  children: [Image.asset("assets/images/logo.png")],
+                  children: [
+                    Image.asset(
+                        width: 150, height: 150, "assets/images/logo.png")
+                  ],
                 ),
                 const SizedBox(height: 30),
                 const Row(
                   children: [
                     Text(
-                      'Welcome',
+                      'Restro',
                       style: TextStyle(
                           color: FoodAppColors.black,
                           fontSize: 28,
                           fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(width: 20),
+                    SizedBox(width: 10),
                     Text(
-                      'Cohort',
+                      'App',
                       style: TextStyle(
-                          color: FoodAppColors.red,
+                          color: FoodAppColors.primaryRed,
                           fontSize: 28,
                           fontWeight: FontWeight.bold),
                     )
@@ -147,9 +139,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushReplacementNamed(
-                            context, passwordResetScreen);
-                        // onButtonPressed(type: "FORGOT_PASSWORD");
+                        onButtonPressed(type: "FORGOT_PASSWORD");
                       },
                       child: const Text(
                         'Forgot Password?',
@@ -172,7 +162,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
                 CommonButton(
                   labelText: 'Sign Up',
                   hasBorder: true,
-                  foregroundColor: FoodAppColors.red,
+                  foregroundColor: FoodAppColors.primaryRed,
                   onButtonPressed: () {
                     onButtonPressed(type: 'SIGN_UP');
                   },
@@ -209,9 +199,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
                         borderColor: FoodAppColors.grey.withOpacity(.20),
                         foregroundColor: FoodAppColors.black,
                         onButtonPressed: () {
-                          ref
-                              .read(signInNotifierProvider.notifier)
-                              .signInWithGoogle();
+                          onButtonPressed(type: "GOOGLE");
                         },
                       ),
                     ),
@@ -248,12 +236,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
                         ),
                         borderColor: FoodAppColors.grey.withOpacity(.20),
                         foregroundColor: FoodAppColors.black,
-                        onButtonPressed: () {
-                          print("object");
-                          ref
-                              .read(signInNotifierProvider.notifier)
-                              .signInWithFacebook();
-                        },
+                        onButtonPressed: () {},
                       ),
                     ),
                   ],

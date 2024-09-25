@@ -114,90 +114,84 @@ class PaymentMethodState extends ConsumerState<PaymentMethod> {
     });
 
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const CommonAppBar(title: 'Payment Method'),
-            Column(
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: FoodAppColors.white,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      children: [
-                        RadioListTile(
-                          controlAffinity: ListTileControlAffinity.trailing,
-                          title: const Text("Debit/Credit card"),
-                          value: "Option 1",
-                          groupValue: selectedValue,
-                          onChanged: (v) {
-                            setState(() {
-                              selectedValue = v;
-                            });
-                          },
-                        ),
-                        SizedBox(
-                          height: 400,
-                          child: ListView.builder(
-                              clipBehavior: Clip.none,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 4,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: FoodAppColors.red.withOpacity(.5),
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    width: 300,
-                                  ),
-                                );
-                              }),
-                        ),
-                        const Gap(10),
-                        TextButton.icon(
-                            style: const ButtonStyle(
-                                splashFactory: NoSplash.splashFactory,
-                                foregroundColor: MaterialStatePropertyAll(
-                                    FoodAppColors.red)),
-                            onPressed: () {},
-                            icon: const Icon(Icons.add),
-                            label: const Text('Add new card'))
-                      ],
-                    ),
+      appBar: CommonAppBar(
+        title: 'Payment Method',
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Container(
+              decoration: BoxDecoration(
+                color: FoodAppColors.white,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Column(
+                children: [
+                  RadioListTile(
+                    controlAffinity: ListTileControlAffinity.trailing,
+                    title: const Text("Debit/Credit card"),
+                    value: "Option 1",
+                    groupValue: selectedValue,
+                    onChanged: (v) {
+                      setState(() {
+                        selectedValue = v;
+                      });
+                    },
                   ),
-                ),
-                const Gap(20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: FoodAppColors.white,
-                        borderRadius: BorderRadius.circular(15)),
-                    child: RadioListTile(
-                      controlAffinity: ListTileControlAffinity.trailing,
-                      title: const Text("Cash on Delivery"),
-                      value: "Option 2",
-                      groupValue: selectedValue,
-                      onChanged: (v) {
-                        setState(() {
-                          selectedValue = v;
-                        });
-                      },
-                    ),
+                  SizedBox(
+                    height: 400,
+                    child: ListView.builder(
+                        clipBehavior: Clip.none,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 4,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: FoodAppColors.primaryRed.withOpacity(.5),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              width: 300,
+                            ),
+                          );
+                        }),
                   ),
-                ),
-              ],
+                  const Gap(10),
+                  TextButton.icon(
+                      style: const ButtonStyle(
+                          splashFactory: NoSplash.splashFactory,
+                          foregroundColor:
+                              WidgetStatePropertyAll(FoodAppColors.primaryRed)),
+                      onPressed: () {},
+                      icon: const Icon(Icons.add),
+                      label: const Text('Add new card'))
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+          const Gap(20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: FoodAppColors.white,
+                  borderRadius: BorderRadius.circular(15)),
+              child: RadioListTile(
+                controlAffinity: ListTileControlAffinity.trailing,
+                title: const Text("Cash on Delivery"),
+                value: "Option 2",
+                groupValue: selectedValue,
+                onChanged: (v) {
+                  setState(() {
+                    selectedValue = v;
+                  });
+                },
+              ),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 30, left: 20, right: 20),

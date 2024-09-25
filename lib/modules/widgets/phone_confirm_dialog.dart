@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:food_app/constants/color_path.dart';
 import 'package:food_app/modules/widgets/common_button.dart';
 import 'package:food_app/modules/widgets/common_textbutton.dart';
+import 'package:intl_phone_field/phone_number.dart';
 
 class PhoneConfirmDialog extends StatelessWidget {
   const PhoneConfirmDialog(
       {super.key, required this.onButtonPressed, required this.phoneNumber});
 
-  final String phoneNumber;
+  final PhoneNumber phoneNumber;
   final VoidCallback onButtonPressed;
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class PhoneConfirmDialog extends StatelessWidget {
                 ),
               ),
               Text(
-                "(+91) $phoneNumber",
+                '(${phoneNumber.countryCode}) ${phoneNumber.number}',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

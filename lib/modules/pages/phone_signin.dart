@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_app/constants/color_path.dart';
 import 'package:food_app/constants/route_path.dart';
-import 'package:food_app/models/auth_model.dart';
 import 'package:food_app/models/otp_verification_model.dart';
 import 'package:food_app/modules/widgets/common_button.dart';
-import 'package:food_app/modules/widgets/common_textfield.dart';
 import 'package:food_app/modules/widgets/phone_confirm_dialog.dart';
 import 'package:food_app/providers/provider.dart';
 import 'package:food_app/utils/helpers/common_helpers.dart';
 import 'package:food_app/utils/response_state.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 
 class PhoneSignInPage extends ConsumerStatefulWidget {
   const PhoneSignInPage({
@@ -24,9 +24,9 @@ class PhoneSignInPage extends ConsumerStatefulWidget {
 
 class PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  final TextEditingController phoneController = TextEditingController();
-  String countryCode = '+91';
   final formKey = GlobalKey<FormState>();
+
+  late PhoneNumber phoneNumber;
 
   onButtonPressed({required String type}) async {
     if (type == 'CONTINUE') {
@@ -42,10 +42,10 @@ class PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
                         ref
                             .read(signUpNotifierProvider.notifier)
                             .verifyPhoneNumber(
-                                phoneNumber:
-                                    countryCode + phoneController.text.trim());
+                                phoneNumber: phoneNumber.countryCode +
+                                    phoneNumber.number);
                       },
-                      phoneNumber: phoneController.text.trim()));
+                      phoneNumber: phoneNumber));
             },
           );
         } finally {}
@@ -74,7 +74,7 @@ class PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
         Navigator.pop(context);
         Navigator.pushReplacementNamed(context, otpScreen,
             arguments: OtpModel(
-                phoneNumber: countryCode + phoneController.text.trim(),
+                phoneNumber: phoneNumber.countryCode + phoneNumber.number,
                 verificationId: next.response));
       }
     });
@@ -90,7 +90,10 @@ class PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(
-                  children: [Image.asset("assets/images/logo.png")],
+                  children: [
+                    Image.asset(
+                        width: 150, height: 150, "assets/images/logo.png")
+                  ],
                 ),
                 const SizedBox(height: 30),
                 const Row(
@@ -104,9 +107,9 @@ class PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
                     ),
                     SizedBox(width: 20),
                     Text(
-                      'Cohort',
+                      'Restro',
                       style: TextStyle(
-                          color: FoodAppColors.red,
+                          color: FoodAppColors.primaryRed,
                           fontSize: 28,
                           fontWeight: FontWeight.bold),
                     )
@@ -125,41 +128,86 @@ class PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
                   ],
                 ),
                 const SizedBox(height: 60),
-                Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                              width: 1,
-                              color: FoodAppColors.grey.withOpacity(0.2))),
-                      width: 60,
-                      height: 63,
-                      child: DropdownButton(
-                          elevation: 0,
-                          underline: const SizedBox.shrink(),
-                          borderRadius: BorderRadius.circular(10),
-                          value: "+91",
-                          items: const [
-                            DropdownMenuItem(value: '+91', child: Text('+91')),
-                            DropdownMenuItem(value: '+1', child: Text('+1')),
-                          ],
-                          onChanged: (value) {
-                            countryCode = value!;
-                          }),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: CommonTextField(
-                        validator: (value) => phoneNumberValidator(value),
-                        textEditingController: phoneController,
-                        hintText: 'Enter Phone Number',
-                        labelText: 'Phone Number',
-                        isPhone: true,
+
+                IntlPhoneField(
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                        color: FoodAppColors.primaryRed,
+                        width: 1,
                       ),
                     ),
-                  ],
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                        width: 1,
+                        color: FoodAppColors.primaryRed,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                        width: 1,
+                        color: FoodAppColors.primaryRed,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: FoodAppColors.grey.withOpacity(0.2),
+                      ),
+                    ),
+                    labelText: 'Phone Number',
+                    labelStyle: const TextStyle(color: FoodAppColors.black),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                          color: FoodAppColors.grey.withOpacity(0.2)),
+                    ),
+                  ),
+                  initialCountryCode: 'IN',
+                  onChanged: (phone) {
+                    phoneNumber = phone;
+                  },
+                  validator: (value) => phoneNumberValidator(value!.number),
                 ),
+                // Row(
+                //   children: [
+                //     Container(
+                //       decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(10),
+                //           border: Border.all(
+                //               width: 1,
+                //               color: FoodAppColors.grey.withOpacity(0.2))),
+                //       width: 60,
+                //       height: 63,
+                //       child: DropdownButton(
+                //           elevation: 0,
+                //           underline: const SizedBox.shrink(),
+                //           borderRadius: BorderRadius.circular(10),
+                //           value: "+91",
+                //           items: const [
+                //             DropdownMenuItem(value: '+91', child: Text('+91')),
+                //             DropdownMenuItem(value: '+1', child: Text('+1')),
+                //           ],
+                //           onChanged: (value) {
+                //             countryCode = value!;
+                //           }),
+                //     ),
+                //     const SizedBox(width: 10),
+                //     Expanded(
+                //       child: CommonTextField(
+                //         validator: (value) => phoneNumberValidator(value),
+                //         textEditingController: phoneController,
+                //         hintText: 'Enter Phone Number',
+                //         labelText: 'Phone Number',
+                //         isPhone: true,
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 const SizedBox(height: 30),
                 CommonButton(
                   labelText: 'Continue',
@@ -170,7 +218,7 @@ class PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
                 const SizedBox(height: 30),
                 CommonButton(
                   hasBorder: true,
-                  foregroundColor: FoodAppColors.red,
+                  foregroundColor: FoodAppColors.primaryRed,
                   labelText: 'Login With password',
                   onButtonPressed: () {
                     onButtonPressed(type: 'PASSWORD');

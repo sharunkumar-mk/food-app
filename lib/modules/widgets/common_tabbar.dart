@@ -21,13 +21,13 @@ class _CommonTabBarState extends State<CommonTabBar>
   late final tabController =
       TabController(length: widget.widgetOptions.length, vsync: this);
   int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: widget.horizontalPadding),
-      child: Column(
-        children: [
-          Row(children: [
+    return Column(
+      children: [
+        Row(
+          children: [
             for (var labels in widget.widgetLabels)
               Expanded(
                 child: Column(
@@ -51,7 +51,7 @@ class _CommonTabBarState extends State<CommonTabBar>
                                     fontSize: 16,
                                     color: selectedIndex ==
                                             widget.widgetLabels.indexOf(labels)
-                                        ? FoodAppColors.red
+                                        ? FoodAppColors.primaryRed
                                         : FoodAppColors.black),
                               ),
                             ),
@@ -63,24 +63,23 @@ class _CommonTabBarState extends State<CommonTabBar>
                         ? Container(
                             height: 2,
                             width: 75,
-                            decoration:
-                                const BoxDecoration(color: FoodAppColors.red),
+                            decoration: const BoxDecoration(
+                                color: FoodAppColors.primaryRed),
                           )
                         : const SizedBox.shrink()
                   ],
                 ),
               ),
-          ]),
-          const SizedBox(height: 16),
-          Expanded(
-            child: TabBarView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: tabController,
-              children: widget.widgetOptions,
-            ),
-          )
-        ],
-      ),
+          ],
+        ),
+        Expanded(
+          child: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: tabController,
+            children: widget.widgetOptions,
+          ),
+        )
+      ],
     );
   }
 }

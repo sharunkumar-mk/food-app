@@ -3,45 +3,75 @@ import 'package:food_app/models/item_model.dart';
 import 'package:food_app/modules/widgets/item/item_card_list.dart';
 
 class FeaturedTab extends StatelessWidget {
-  final ItemModel? items;
-  const FeaturedTab({super.key, this.items});
+  final List<Item> items;
+  const FeaturedTab({super.key, required this.items});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: items!.items!.length,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: items.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
-            child: ItemCardList(item: items!.items![index]),
+            child: ItemCardList(item: items[index]),
           );
         });
   }
 }
 
 class PopularTab extends StatelessWidget {
-  const PopularTab({super.key});
+  final List<Item> items;
+  const PopularTab({super.key, required this.items});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Popular tab'));
+    return ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: ItemCardList(item: items[index]),
+          );
+        });
   }
 }
 
 class NewestTab extends StatelessWidget {
-  const NewestTab({super.key});
+  final List<Item> items;
+
+  const NewestTab({super.key, required this.items});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text("Newesr tab"));
+    return ListView.builder(
+        // physics: NeverScrollableScrollPhysics(),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: ItemCardList(item: items[index]),
+          );
+        });
   }
 }
 
 class TrendingTab extends StatelessWidget {
-  const TrendingTab({super.key});
+  final List<Item> items;
+
+  const TrendingTab({super.key, required this.items});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text("Trending tab"));
+    return ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: ItemCardList(item: items[index]),
+          );
+        });
   }
 }

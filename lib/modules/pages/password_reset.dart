@@ -76,7 +76,7 @@ class PasswordResetState extends ConsumerState<PasswordReset> {
                     Text(
                       'Cohort',
                       style: TextStyle(
-                          color: FoodAppColors.red,
+                          color: FoodAppColors.primaryRed,
                           fontSize: 28,
                           fontWeight: FontWeight.bold),
                     )
@@ -107,7 +107,7 @@ class PasswordResetState extends ConsumerState<PasswordReset> {
                 CommonButton(
                   labelText: 'Send verification email',
                   hasBorder: true,
-                  foregroundColor: FoodAppColors.red,
+                  foregroundColor: FoodAppColors.primaryRed,
                   onButtonPressed: () {
                     onButtonPressed(type: 'SEND_EMAIL');
                   },

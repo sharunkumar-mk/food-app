@@ -103,7 +103,10 @@ class OtpVerifyPageState extends ConsumerState<OtpVerifyPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Row(
-                    children: [Image.asset("assets/images/logo.png")],
+                    children: [
+                      Image.asset(
+                          width: 150, height: 150, "assets/images/logo.png")
+                    ],
                   ),
                   const SizedBox(height: 30),
                   const Row(
@@ -119,7 +122,7 @@ class OtpVerifyPageState extends ConsumerState<OtpVerifyPage> {
                       Text(
                         'OTP',
                         style: TextStyle(
-                            color: FoodAppColors.red,
+                            color: FoodAppColors.primaryRed,
                             fontSize: 28,
                             fontWeight: FontWeight.bold),
                       )
@@ -163,7 +166,7 @@ class OtpVerifyPageState extends ConsumerState<OtpVerifyPage> {
                           ? Text(
                               "Resend($remainingSeconds)",
                               style: const TextStyle(
-                                color: FoodAppColors.red,
+                                color: FoodAppColors.primaryRed,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -175,7 +178,7 @@ class OtpVerifyPageState extends ConsumerState<OtpVerifyPage> {
                               child: const Text(
                                 "Resend",
                                 style: TextStyle(
-                                  color: FoodAppColors.red,
+                                  color: FoodAppColors.primaryRed,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
                                 ),

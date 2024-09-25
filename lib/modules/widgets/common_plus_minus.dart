@@ -33,8 +33,9 @@ class _CommonPlusMinusState extends State<CommonPlusMinus> {
       decoration: BoxDecoration(
           color: FoodAppColors.white,
           borderRadius: BorderRadius.circular(10),
-          border:
-              widget.hasBorder ? Border.all(color: FoodAppColors.red) : null),
+          border: widget.hasBorder
+              ? Border.all(color: FoodAppColors.primaryRed)
+              : null),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -55,7 +56,7 @@ class _CommonPlusMinusState extends State<CommonPlusMinus> {
                 "assets/icons/minus.png",
                 width: 20,
                 height: 20,
-                color: FoodAppColors.red,
+                color: FoodAppColors.primaryRed,
               )),
           Text(
             itemCount.toString(),
@@ -70,7 +71,7 @@ class _CommonPlusMinusState extends State<CommonPlusMinus> {
               },
               child: Image.asset(
                 "assets/icons/plus.png",
-                color: FoodAppColors.red,
+                color: FoodAppColors.primaryRed,
                 width: 20,
                 height: 20,
               )),
